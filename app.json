@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "scheme": "acme",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "Plant_Kenya",
+    "slug": "Plant_Kenya"
+  }
+}
