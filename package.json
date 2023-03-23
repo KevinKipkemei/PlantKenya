@@ -6,12 +6,17 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-firebase/app": "^17.3.2",
+    "@react-native-mapbox-gl/maps": "^8.6.0-beta.0",
+    "@rnmapbox/maps": "^10.0.0-rc.0",
     "expo": "^48.0.7",
     "expo-constants": "~14.2.1",
+    "expo-dev-client": "~2.1.5",
     "expo-linking": "~4.0.1",
     "expo-router": "^1.2.0",
     "expo-splash-screen": "~0.18.1",
     "expo-status-bar": "~1.4.2",
+    "firebase": "^9.18.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.71.3",
