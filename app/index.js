@@ -12,7 +12,7 @@ const Home = () => {
         headerTitle: '',
         headerShadowVisible: false,
         headerRight: () => (
-            <ScreenHeaderBtn iconUrl={icons.map}  dimension= "90%"/>
+            <ScreenHeaderBtn iconUrl={icons.map}  dimension= "90%" onPress = { () => {router.push('/map')}}/>
         )
         }}
       />
