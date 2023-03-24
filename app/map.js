@@ -4,8 +4,13 @@ import { Stack } from 'expo-router';
 import { COLORS, FONT, icons } from '../constants';
 import { TouchableOpacity } from 'react-native';
 import styles from '../components/styles/map.style'
+import useFetch from '../hook/useFetch'
+import { ScrollView } from 'react-native';
+
 
 const map= () => {
+  const {result} = useFetch()
+
   return (
       <View style =  {styles.container}>
         <Stack.Screen
@@ -23,10 +28,22 @@ const map= () => {
             style = {styles.map}
             initialRegion = {{latitude: 0.0236, longitude: 37.9062, latitudeDelta: 0.00000006, longitudeDelta: 8 }}
           />
-            <View style = {styles.card}>
-              <Text>Test Tree Planting exercise</Text>
-              <Image source={icons.add2} resizeMode = 'cover'/>
-            </View>
+          <View style = {styles.cardsContainer}>
+           <ScrollView horizontal>
+              {
+                result?.map((item,i) => (
+                  <View key={i} style = {styles.card}>
+                    <TouchableOpacity style = {styles.pictureOpacity}>
+                      <Image style = {styles.picture} source = {icons.planting} resizeMode = 'cover'/>
+                    </TouchableOpacity>
+                    <Text> {item.Project_Name} </Text>
+                    <Text> {item.Number_Trees} Trees</Text>
+                    <Text> {item.Location} </Text>
+                  </View>
+                      ))
+                }
+            </ScrollView>
+          </View>
       </View>
   )
 }

@@ -1,8 +1,9 @@
 import { useRouter } from "expo-router"
-import { View, Text, TouchableOpacity, ActivityIndicator, FlatList } from "react-native"
-import { COLORS, SIZES } from "../../constants"
+import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native"
+import { COLORS, SIZES, icons } from "../../constants"
 import styles from "./recent.style"
 import useFetch from '../../hook/useFetch'
+import { Image } from "react-native"
 
 const Recent = () => {
   const router = useRouter();
@@ -26,10 +27,11 @@ const Recent = () => {
               {
                 result?.map((item,i) => (
                 <View key={i} style = {styles.card_container}>
+                  <Image style = {styles.card_image} source={icons.planting2} resizeMode = {'cover'}/>
                   <Text style = {styles.headerTitle}> {item.Project_Name} </Text>
                   <View style = {styles.treecontaier}>
                     <Text style = {styles.headerBtn}> {item.Number_Trees} Trees</Text>
-                    <TouchableOpacity style = {styles.updateBtn} onPress = { () => {router.push('/update')}} ><Text style = {styles.cardBtn}>Update</Text></TouchableOpacity>
+                    {/* <TouchableOpacity style = {styles.updateBtn} onPress = { () => {router.push('/update')}} ><Text style = {styles.cardBtn}>Update</Text></TouchableOpacity> */}
                   </View>
                 </View>
                 ))

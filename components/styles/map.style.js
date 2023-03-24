@@ -7,17 +7,42 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     backgroundColor: COLORS.lightWhite,
-    padding: 10
+  },
+  pictureOpacity: {
+    width: '50%',
+    height: '100%',
+    backgroundColor: COLORS.lightWhite,
+    borderRadius: SIZES.small / 1.25
+  },
+  picture : {
+    width: '100%',
+    height: '100%',
+    borderRadius: SIZES.small / 1.25,
   },
   map: {
     width: '100%',
     height: '70%'
   },
+
+  cardsContainer : {
+    height: '30%'
+  },
+  
   card: {
     backgroundColor: COLORS.white,
-    height: '25%',
-    width: '80%',
-    marginTop: 10
+    width: 400,
+    marginTop: 10,
+    marginLeft:10,
+    flexDirection: "row",
+    justifyContent : 'space-between',
+    padding: 10,
+    borderRadius: SIZES.small / 1.25,
+  },
+
+  cardTitle: {
+    fontFamily: FONT.bold,
+    fontSize: SIZES.small,
+    color: COLORS.secondary,
   },
 
   mapBtn: {

@@ -4,7 +4,7 @@ import { FONT, SIZES, COLORS, SHADOWS } from "../../constants";
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: SIZES.xLarge,
+    marginTop: SIZES.xLarge
   },
 
   treecontaier: {
@@ -14,15 +14,22 @@ const styles = StyleSheet.create({
 
   card_container: {
     width: "100%",
-    backgroundColor: COLORS.white,
-    height: 300,
+    // // backgroundColor: COLORS.white,
+    // height: 315,
     marginTop: SIZES.small,
-    borderRadius: SIZES.small,
-    justifyContent: 'flex-end',
-    ...SHADOWS.medium,
-    shadowColor: COLORS.white,
-    paddingRight: 10,
+    // borderRadius: SIZES.small,
+    // // justifyContent: 'flex-end',
+    // // ...SHADOWS.medium,
+    // // shadowColor: COLORS.white,
+    // paddingRight: 10,
     paddingBottom: 10
+  },
+
+  card_image : {
+    width: '100%',
+    height: 330,
+    borderRadius: SIZES.xSmall,
+    marginBottom: 10
   },
 
   header: {
@@ -31,12 +38,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerTitle: {
-    fontSize: SIZES.large,
-    fontFamily: FONT.medium,
+    fontSize: SIZES.small,
+    fontFamily: FONT.bold,
     color: COLORS.primary,
   },
   headerBtn: {
-    fontSize: SIZES.medium,
+    fontSize: SIZES.small,
     fontFamily: FONT.medium,
     color: COLORS.gray,
   },
@@ -46,9 +53,9 @@ const styles = StyleSheet.create({
 
   updateBtn: {
     width: 75,
-    height: 40,
-    backgroundColor: COLORS.tertiary,
-    borderRadius: SIZES.small,
+    height: 30,
+    backgroundColor: COLORS.gray2,
+    borderRadius: SIZES.xSmall,
     justifyContent: "center",
     alignItems: "center",
   },
