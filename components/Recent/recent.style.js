@@ -12,6 +12,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
 
+  pencontainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
+  },
+
   card_container: {
     width: "100%",
     // // backgroundColor: COLORS.white,
@@ -52,9 +57,12 @@ const styles = StyleSheet.create({
   },
 
   updateBtn: {
-    width: 75,
+    width: 30,
     height: 30,
-    backgroundColor: COLORS.gray2,
+    marginTop: -359,
+    marginRight: 5,
+    padding: 7,
+    backgroundColor: COLORS.lightWhite,
     borderRadius: SIZES.xSmall,
     justifyContent: "center",
     alignItems: "center",
@@ -65,6 +73,11 @@ const styles = StyleSheet.create({
     fontFamily: FONT.regular,
     color: COLORS.white,
   },
+
+  btnImage : {
+    height: '100%',
+    width: '100%'
+  }
 });
 
 export default styles;

@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightWhite,
   },
   pictureOpacity: {
-    width: '50%',
+    width: '40%',
     height: '100%',
     backgroundColor: COLORS.lightWhite,
     borderRadius: SIZES.small / 1.25
@@ -21,28 +21,49 @@ const styles = StyleSheet.create({
   },
   map: {
     width: '100%',
-    height: '70%'
+    height: '80%'
+  },
+
+  cardIcon : {
+    width: 10,
+    height: 10
+  },
+
+  treesContainer: {
+    flexDirection: 'row',
+    marginLeft: 10
   },
 
   cardsContainer : {
-    height: '30%'
+    height: '20%'
   },
   
+  cardText : {
+    fontFamily: FONT.bold,
+    fontSize: SIZES.small,
+    marginLeft: 10,
+    marginTop: 6
+  },
+
+  secondaryCardText : {
+    fontFamily: FONT.regular,
+    fontSize: SIZES.small,
+    marginLeft: 2
+  },
+
+  cardTextContainer: {
+    justifyContent: 'space-between'
+  },
+
   card: {
     backgroundColor: COLORS.white,
-    width: 400,
+    width: 300,
     marginTop: 10,
     marginLeft:10,
     flexDirection: "row",
-    justifyContent : 'space-between',
-    padding: 10,
+    justifyContent : 'flex-start',
+    padding: 6,
     borderRadius: SIZES.small / 1.25,
-  },
-
-  cardTitle: {
-    fontFamily: FONT.bold,
-    fontSize: SIZES.small,
-    color: COLORS.secondary,
   },
 
   mapBtn: {

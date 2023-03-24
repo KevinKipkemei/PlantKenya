@@ -10,6 +10,7 @@ const Recent = () => {
 
   const {result, isLoading, error} = useFetch()
 
+
   return (
     <View style = {styles.container}>
       <View style = {styles.header}>
@@ -31,7 +32,12 @@ const Recent = () => {
                   <Text style = {styles.headerTitle}> {item.Project_Name} </Text>
                   <View style = {styles.treecontaier}>
                     <Text style = {styles.headerBtn}> {item.Number_Trees} Trees</Text>
-                    {/* <TouchableOpacity style = {styles.updateBtn} onPress = { () => {router.push('/update')}} ><Text style = {styles.cardBtn}>Update</Text></TouchableOpacity> */}
+                    <Text style = {styles.headerBtn}> {item.Location}</Text>
+                  </View>
+                  <View style = {styles.pencontainer}>
+                    <TouchableOpacity style = {styles.updateBtn} onPress = { () => {router.push('/update')}}>
+                      <Image style = {styles.btnImage} source={icons.edit}/>
+                    </TouchableOpacity>
                   </View>
                 </View>
                 ))

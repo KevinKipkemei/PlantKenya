@@ -8,6 +8,7 @@ import location from '../assets/icons/location.png'
 import calendar from '../assets/icons/schedule.png'
 import tree from '../assets/icons/tree.png'
 import planting2 from '../assets/images/planting2.jpg'
+import edit from '../assets/icons/edit.png'
 
 
 export default {
@@ -20,5 +21,6 @@ export default {
     planting2,
     location,
     calendar,
-    tree
+    tree,
+    edit
 };
