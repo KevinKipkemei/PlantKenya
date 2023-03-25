@@ -24,6 +24,11 @@ const styles = StyleSheet.create({
     height: '80%'
   },
 
+  modalUpper: {
+    height: 220
+  },
+  
+
   cardIcon : {
     width: 10,
     height: 10

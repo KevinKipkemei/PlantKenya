@@ -1,4 +1,4 @@
-import {View, Image, Text } from 'react-native';
+import {View, Image, Text, Modal } from 'react-native';
 import MapView from 'react-native-maps';
 import { Stack } from 'expo-router';
 import { COLORS, FONT, icons } from '../constants';
@@ -7,10 +7,16 @@ import styles from '../components/styles/map.style'
 import useFetch from '../hook/useFetch'
 import { ScrollView } from 'react-native';
 import { Marker, Callout } from 'react-native-maps';
+import { useState } from 'react';
+import ModalForm from './modal';
 
 
 const map= () => {
-  const {result} = useFetch()
+  const {result} = useFetch();
+  const [visible, setVisible] = useState(false);
+
+  const show = () => setVisible(true);
+  const hide = () => setVisible(false);
 
   return (
       <View style =  {styles.container}>
@@ -19,7 +25,7 @@ const map= () => {
           headerTitle: '',
           headerShadowVisible: false,
           headerRight : () => (
-            <TouchableOpacity style = {styles.mapBtn}>
+            <TouchableOpacity style = {styles.mapBtn} onPress = {show}>
                   <Image source={icons.add2} resizeMode = 'cover' style = {styles.mapBtnImage}/>
             </TouchableOpacity>
           )
@@ -63,6 +69,12 @@ const map= () => {
                 }
             </ScrollView>
           </View>
+          <Modal animationType="slide" visible = {visible} transparent>
+            <View>
+              <TouchableOpacity  style = {styles.modalUpper} onPress={hide}></TouchableOpacity>
+              <ModalForm/>            
+            </View>
+          </Modal>
       </View>
   )
 }
