@@ -1,7 +1,7 @@
-import { ScrollView, Modal } from "react-native"
+import { ScrollView, Modal, Alert } from "react-native"
 import { View, TextInput, Text, TouchableOpacity , SafeAreaView} from "react-native"
 import styles from '../components/styles/modal.style'
-import MapView, { Callout } from 'react-native-maps';
+import MapView, { Callout, Polygon } from 'react-native-maps';
 import { useState, useEffect } from "react";
 import * as Current from 'expo-location'
 import { Marker } from "react-native-maps";
@@ -12,7 +12,23 @@ const ModalForm = () => {
   
     const [location, setLocation] = useState();
     const [isFetching, setisFetching] = useState(true)
-    const [polygonLocation, setPolygon] = useState({});
+    const [polyCoordinates, setpolyCoordinates] = useState([]);
+    const [dragCoords, setdragCoords] = useState({latitude: -1.286389, longitude: 36.817223})
+    const [complete, setComplete] = useState(false)
+
+    const addCoordinates = () => {
+        const newCoords = dragCoords;
+        setpolyCoordinates((prevCoords) => [...prevCoords, newCoords]);
+        Alert.alert('Coordinate Message', 'Select complete after adding the final coordinate', [
+            {
+                text: 'Complete',
+                onPress: () => setComplete(true)
+              },
+              {
+                text: 'Continue'
+              }
+        ])
+      };
 
     useEffect(() => {
         const getPermissions = async () => {
@@ -29,8 +45,8 @@ const ModalForm = () => {
         getPermissions()
     }, []);
 
-    // console.log(location)
-    // console.log(isFetching)
+  console.log(polyCoordinates)
+  console.log(complete)
 
 
   return (
@@ -52,12 +68,14 @@ const ModalForm = () => {
                         <Text style = {styles.modalInputTitles}>Add Coordinates</Text>
                         { !isFetching && (<MapView 
                             style = {styles.map}
-                            showsUserLocation = {true}
+                            // showsUserLocation = {true}
                             initialRegion = {{latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.00000006, longitudeDelta: 0.08 }}
                         >
-                            <Marker coordinate={{latitude:location.coords.latitude, longitude: location.coords.longitude}} draggable = {true} pinColor = 'green'>
-                                <Callout><Text>Add Location coordinate</Text></Callout>
+                            <Marker coordinate={{latitude:location.coords.latitude, longitude: location.coords.longitude}} draggable = {true} 
+                            pinColor = 'green' onDragEnd = { (e) => setdragCoords(e.nativeEvent.coordinate)} >
+                                <Callout onPress={addCoordinates}><Text>Add Location coordinate</Text></Callout>
                             </Marker>
+                            { complete && (<Polygon fillColor={'rgba(100, 100, 200, 0.3)'} coordinates={polyCoordinates}/>)}
                         </MapView>)}
                     </View>
                     <TouchableOpacity style = {styles.button}>
