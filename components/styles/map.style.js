@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
 
   modalUpper: {
-    height: 220
+    height: 150
   },
   
 

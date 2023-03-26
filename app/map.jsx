@@ -69,12 +69,14 @@ const map= () => {
                 }
             </ScrollView>
           </View>
-          <Modal animationType="slide" visible = {visible} transparent>
-            <View>
-              <TouchableOpacity  style = {styles.modalUpper} onPress={hide}></TouchableOpacity>
-              <ModalForm/>            
-            </View>
-          </Modal>
+          <ScrollView>
+            <Modal animationType="slide" visible = {visible} transparent>
+              <View style = {{height: '100%'}}>
+                <TouchableOpacity  style = {styles.modalUpper} onPress={hide}></TouchableOpacity>
+                <ModalForm/>            
+              </View>
+            </Modal>
+          </ScrollView>
       </View>
   )
 }

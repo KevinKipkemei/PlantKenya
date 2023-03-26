@@ -8,7 +8,9 @@ const styles = StyleSheet.create({
     height: "100%",
     flex: 1,
     backgroundColor: COLORS.lightWhite,
-    padding: 30,
+    padding: 25,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20
   },
 
   mapContainer: {
