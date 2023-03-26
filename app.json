@@ -4,15 +4,6 @@
     "web": {
       "bundler": "metro"
     },
-    "plugins": [
-      [
-        "@rnmapbox/maps",
-        {
-          "RNMapboxMapsImpl": "mapbox",
-          "RNMapboxMapsDownloadToken": "sk.eyJ1Ijoia2V2aW5rZW1laSIsImEiOiJjbGZrMTBra2IwNmZlM3JtdGtwMWhpdzFzIn0.UUxoBn_A7-FswCNkrJXJmw"
-        }
-      ]
-    ],
     "name": "Plant_Kenya",
     "slug": "Plant_Kenya"
   }

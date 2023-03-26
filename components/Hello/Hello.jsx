@@ -14,7 +14,7 @@ const Hello = () => {
     <View>
         <View style = {styles.container}>
             <Text style = {styles.userName}>Hello!</Text>
-            <Text style = {styles.welcomeMessage}>Search for a project</Text>
+            <Text style = {styles.welcomeMessage}>Update project progress</Text>
         </View>
         <View style = {styles.searchContainer}>
             <View style = {styles.searchWrapper}>

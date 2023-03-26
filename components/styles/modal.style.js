@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.lightWhite,
     padding: 25,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15
   },
 
   mapContainer: {
