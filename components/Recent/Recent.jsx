@@ -1,14 +1,22 @@
 import { useRouter } from "expo-router"
-import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native"
+import { View, Text, TouchableOpacity, ActivityIndicator, Modal } from "react-native"
 import { COLORS, SIZES, icons } from "../../constants"
 import styles from "./recent.style"
 import useFetch from '../../hook/useFetch'
 import { Image } from "react-native"
+import Update from "../../app/update"
+import { useState } from "react"
 
 const Recent = () => {
   const router = useRouter();
 
-  const {result, isLoading, error} = useFetch()
+  const {result, isLoading, error} = useFetch();
+  const [visible, setVisible] = useState(false);
+  const [selected, setSelected] = useState()
+
+  const hide = () => setVisible(false);
+  const show = () => {setVisible(true)};
+
 
 
   return (
@@ -35,7 +43,7 @@ const Recent = () => {
                     <Text style = {styles.headerBtn}> {item.Location}</Text>
                   </View>
                   <View style = {styles.pencontainer}>
-                    <TouchableOpacity style = {styles.updateBtn} onPress = { () => {router.push('/update')}}>
+                    <TouchableOpacity style = {styles.updateBtn} onPress = {() => {setVisible(true); setSelected(item.id) }}>
                       <Image style = {styles.btnImage} source={icons.edit}/>
                     </TouchableOpacity>
                   </View>
@@ -44,6 +52,12 @@ const Recent = () => {
               }
             </View>
         )}
+        <Modal animationType="slide" visible = {visible} transparent>
+          <View style = {{height: '100%'}}>
+            <TouchableOpacity style = {styles.modalUpper} onPress = {hide}></TouchableOpacity>
+            <Update name = {selected}/>
+          </View>
+        </Modal>
       </View>
     </View>
   )

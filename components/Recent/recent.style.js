@@ -56,6 +56,10 @@ const styles = StyleSheet.create({
     marginTop: SIZES.medium,
   },
 
+  modalUpper: {
+    height: 200,
+  },
+
   updateBtn: {
     width: 30,
     height: 30,

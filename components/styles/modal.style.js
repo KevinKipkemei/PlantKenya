@@ -17,7 +17,23 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 350,
     marginTop: 10,
-    marginBottom: 20
+    marginBottom: 30
+  },
+
+  picTC : {
+    height: 35,
+    width: 35,
+    marginLeft: 5,
+    backgroundColor: COLORS.white,
+    borderRadius: 5,
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+
+  uploadButtons : {
+    flexDirection : 'row',
+    justifyContent: 'flex-end'
   },
 
   modalContent: {

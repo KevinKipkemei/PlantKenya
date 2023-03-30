@@ -1,10 +1,14 @@
-import { ScrollView, Modal, Alert } from "react-native"
+import { ScrollView, Modal, Alert, FlatList, Image, Button } from "react-native"
 import { View, TextInput, Text, TouchableOpacity , SafeAreaView} from "react-native"
 import styles from '../components/styles/modal.style'
 import MapView, { Callout, Polygon } from 'react-native-maps';
 import { useState, useEffect } from "react";
 import * as Current from 'expo-location'
 import { Marker } from "react-native-maps";
+import * as ImagePicker from 'expo-image-picker'
+import { Camera } from "expo-camera";
+import { COLORS } from "../constants";
+import { Ionicons } from "@expo/vector-icons";
 
 
 
@@ -15,6 +19,10 @@ const ModalForm = () => {
     const [polyCoordinates, setpolyCoordinates] = useState([]);
     const [dragCoords, setdragCoords] = useState({latitude: -1.286389, longitude: 36.817223})
     const [complete, setComplete] = useState(false)
+    const [hasPermission, setHasPermission] = useState(null) //cammera permissions state
+    const [imageData, setImageData] = useState([])
+    const [showCamera, setShowCamera] = useState(false)
+
 
     const addCoordinates = () => {
         const newCoords = dragCoords;
@@ -37,7 +45,7 @@ const ModalForm = () => {
                 alert('Please grant location permission');
                 return;
             }
-            let currentLocation = await Current.getCurrentPositionAsync({});
+            let currentLocation = await Current.getCurrentPositionAsync({accuracy: Current.Accuracy.Highest});
             setLocation(currentLocation);
             setisFetching(false)
         };
@@ -45,8 +53,37 @@ const ModalForm = () => {
         getPermissions()
     }, []);
 
-  console.log(polyCoordinates)
-  console.log(complete)
+    useEffect(() => {
+        const cameraPermissions = async () => {
+          const { status } = await Camera.requestCameraPermissionsAsync();
+          setHasPermission(status === 'granted');
+        };
+        cameraPermissions()
+      }, []);
+
+      const takePicture = async () => {
+        if (cameraRef) {
+            try{
+                const options = { quality: 1, base64: true };
+                const data = await cameraRef.takePictureAsync(options);
+                setImageData([...imageData, data]);
+                setShowCamera(false);
+            } catch(e){
+                console.log(e)
+            }
+        }
+      };
+
+      let cameraRef = null;
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+
 
 
   return (
@@ -63,6 +100,59 @@ const ModalForm = () => {
                         <TextInput style = {styles.textInput}></TextInput>
                         <Text style = {styles.modalInputTitles}>Location</Text>
                         <TextInput style = {styles.textInput}></TextInput>
+                        <Text style = {styles.modalInputTitles}>Add Site Picures</Text>
+                        <View style = {{height: 600}}>
+                            <View style = {styles.uploadButtons}>
+                                <TouchableOpacity style = {styles.picTC}
+                                    onPress={async () => {
+                                        const result = await ImagePicker.launchImageLibraryAsync();
+                                        if (!result.canceled) {
+                                        setImageData([...imageData, result]);
+                                        }
+                                    }}>
+                                    <Ionicons name="folder-outline" size={22} color="grey" />
+                                </TouchableOpacity>
+                                <TouchableOpacity style = {styles.picTC} onPress = {() => setShowCamera(true)}>
+                                    <Ionicons name="camera-outline" size={22} color="grey" />
+                                </TouchableOpacity>
+                            </View>
+                            { showCamera? (
+                                    <View style = {{flex: 1}}>
+                                        <Camera
+                                            style = {{flex: 1, marginTop : 10, backgroundColor: COLORS.white}}
+                                            type = {Camera.Constants.Type.back} 
+                                            ref = {(ref) => {
+                                                cameraRef = ref;
+                                            }}
+                                        >
+                                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                            <Button title="Take Picture" onPress={takePicture} />
+                                            <Button
+                                                title="Cancel"
+                                                onPress={() => {
+                                                    setShowCamera(false);
+                                                }}
+                                            />
+                                        </View>
+                                        </Camera>
+                                    </View>
+                                )
+                                :(<View style ={{height: 500, backgroundColor: COLORS.white, marginTop: 10, borderRadius: 10, marginBottom: 10}}>
+                                <FlatList 
+                                    data = {imageData}
+                                    numColumns = {3}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    renderItem={({ item }) => (
+                                        <Image
+                                            source={{ uri: item.uri }}
+                                            style={{ width: '30%', height: 100, margin: 5, borderRadius: 10 }}
+                                        />
+                                    )}
+                                />
+                                </View>
+                                )
+                            }
+                        </View>
                     </View>
                     <View style = {styles.mapContainer}>
                         <Text style = {styles.modalInputTitles}>Add Coordinates</Text>
