@@ -9,6 +9,8 @@ import * as ImagePicker from 'expo-image-picker'
 import { Camera } from "expo-camera";
 import { COLORS } from "../constants";
 import { Ionicons } from "@expo/vector-icons";
+import {db} from '../firebaseConfig'
+import {doc, addDoc, collection} from 'firebase/firestore'
 
 
 
@@ -22,7 +24,36 @@ const ModalForm = () => {
     const [hasPermission, setHasPermission] = useState(null) //cammera permissions state
     const [imageData, setImageData] = useState([])
     const [showCamera, setShowCamera] = useState(false)
+    const [project, setProject] = useState()
+    const [trees, setTrees] = useState()
+    const [description, setDescription] = useState()
+    const [species, setSpecies] = useState([])
+    const [county, setCounty] = useState()
 
+    data = {
+        Description: description,
+        Species:species,
+        Project_Name: project,
+        Coordinates: dragCoords,
+        Number_Trees: trees,
+        Polygon : polyCoordinates,
+        Location: county
+
+    }
+
+    const addRecord = () => {
+        docRef = addDoc(collection(db, 'Projects'),
+        data)
+        .then(docRef => {
+            console.log('New document added')
+            alert('Project added successfully.')
+          })
+          .catch(error => {
+            console.log(error)
+            alert('The project could not be added. Try again.')
+          })
+
+    }
 
     const addCoordinates = () => {
         const newCoords = dragCoords;
@@ -48,6 +79,7 @@ const ModalForm = () => {
             let currentLocation = await Current.getCurrentPositionAsync({accuracy: Current.Accuracy.Highest});
             setLocation(currentLocation);
             setisFetching(false)
+
         };
 
         getPermissions()
@@ -93,13 +125,20 @@ const ModalForm = () => {
                 <View>
                         <Text style = {styles.modalTitle}>Add New Project</Text>
                         <Text style = {styles.modalInputTitles}>Project Name</Text>
-                        <TextInput style = {styles.textInput}></TextInput>
+                        <TextInput onChangeText = {value => setProject(value)} style = {styles.textInput}></TextInput>
                         <Text style = {styles.modalInputTitles}>Trees Planted</Text>
-                        <TextInput style = {styles.textInput}></TextInput>
+                        <TextInput keyboardType="numeric"  onChangeText={value => setTrees(value)} style = {styles.textInput}></TextInput>
                         <Text style = {styles.modalInputTitles}>Description</Text>
-                        <TextInput style = {styles.textInput}></TextInput>
+                        <TextInput  multiline = {true} onChangeText={value =>setDescription(value)} style = {styles.textInput}></TextInput>
+                        <Text style = {styles.modalInputTitles}>Species</Text>
+                        <View style = {styles.uploadButtons}>
+                            <TouchableOpacity style = {styles.picTC}>
+                                <Ionicons name="add-outline"/>
+                            </TouchableOpacity>
+                        </View>
+                        <TextInput onChangeText = {value => setSpecies(value)} style = {styles.textInput}></TextInput>
                         <Text style = {styles.modalInputTitles}>Location</Text>
-                        <TextInput style = {styles.textInput}></TextInput>
+                        <TextInput onChangeText={value => setCounty(value)} style = {styles.textInput}></TextInput>
                         <Text style = {styles.modalInputTitles}>Add Site Picures</Text>
                         <View style = {{height: 600}}>
                             <View style = {styles.uploadButtons}>
@@ -159,7 +198,7 @@ const ModalForm = () => {
                         { !isFetching && (<MapView 
                             style = {styles.map}
                             // showsUserLocation = {true}
-                            initialRegion = {{latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.00000006, longitudeDelta: 0.08 }}
+                            initialRegion = {{latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.00000006, longitudeDelta: 0.0006 }}
                         >
                             <Marker coordinate={{latitude:location.coords.latitude, longitude: location.coords.longitude}} draggable = {true} 
                             pinColor = 'green' onDragEnd = { (e) => setdragCoords(e.nativeEvent.coordinate)} >
@@ -168,7 +207,7 @@ const ModalForm = () => {
                             { complete && (<Polygon fillColor={'rgba(100, 100, 200, 0.3)'} coordinates={polyCoordinates}/>)}
                         </MapView>)}
                     </View>
-                    <TouchableOpacity style = {styles.button}>
+                    <TouchableOpacity style = {styles.button} onPress = {addRecord}>
                             <Text style = {styles.btnText}>Add Project</Text>
                     </TouchableOpacity>
                 </View>

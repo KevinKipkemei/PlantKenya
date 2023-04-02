@@ -28,6 +28,7 @@ const Update= (name) => {
     updateDoc(docRef, data)
     .then(docRef => {
       console.log('New document added')
+      alert('Update successful')
     })
     .catch(error => {
       console.log(error)

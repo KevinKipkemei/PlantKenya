@@ -22,7 +22,7 @@ const useFetch = () => {
 
   useEffect(() => {
     fetchData();
-  }, [])
+  }, [result])
 
   return {result, error, isLoading}; 
   

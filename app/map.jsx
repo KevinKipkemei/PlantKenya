@@ -1,4 +1,4 @@
-import {View, Image, Text, Modal } from 'react-native';
+import {View, Image, Text, Modal, RefreshControl } from 'react-native';
 import MapView from 'react-native-maps';
 import { Stack } from 'expo-router';
 import { COLORS, FONT, icons } from '../constants';
@@ -7,13 +7,21 @@ import styles from '../components/styles/map.style'
 import useFetch from '../hook/useFetch'
 import { ScrollView } from 'react-native';
 import { Marker, Callout } from 'react-native-maps';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import ModalForm from './modal';
 
 
 const map= () => {
   const {result} = useFetch();
   const [visible, setVisible] = useState(false);
+  const [refreshing, setRefreshing] = useState(false)
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const show = () => setVisible(true);
   const hide = () => setVisible(false);
@@ -44,7 +52,9 @@ const map= () => {
             }
           </MapView>
           <View style = {styles.cardsContainer}>
-           <ScrollView horizontal>
+           <ScrollView horizontal  refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
               {
                 result?.map((item,i) => (
                   <View key={i} style = {styles.card}>
