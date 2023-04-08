@@ -3,7 +3,7 @@ import { getFirestore } from "firebase/firestore";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAKc4J5DyQ7uqvKOFLezFedojFhGUs-kGU",
+  apiKey: "",
   authDomain: "plant-kenya.firebaseapp.com",
   projectId: "plant-kenya",
   storageBucket: "plant-kenya.appspot.com",
