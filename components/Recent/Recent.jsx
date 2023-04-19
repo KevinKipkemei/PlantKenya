@@ -36,7 +36,9 @@ const Recent = () => {
               {
                 result?.map((item,i) => (
                 <View key={i} style = {styles.card_container}>
-                  <Image style = {styles.card_image} source={icons.planting2} resizeMode = {'cover'}/>
+                  <TouchableOpacity onPress={() => {router.push('/report')}}>
+                    <Image style = {styles.card_image} source={icons.planting2} resizeMode = {'cover'}/>
+                  </TouchableOpacity>
                   <Text style = {styles.headerTitle}> {item.Project_Name} </Text>
                   <View style = {styles.treecontaier}>
                     <Text style = {styles.headerBtn}> {item.Number_Trees} Trees</Text>

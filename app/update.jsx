@@ -5,8 +5,9 @@ import * as ImagePicker from 'expo-image-picker'
 import {Camera} from 'expo-camera'
 import { COLORS } from "../constants";
 import {Ionicons} from '@expo/vector-icons'
-import {doc, updateDoc} from 'firebase/firestore'
+import {collection, doc, setDoc} from 'firebase/firestore'
 import {db} from '../firebaseConfig'
+
 
 
 const Update= (name) => {
@@ -17,18 +18,22 @@ const Update= (name) => {
   const [notes, setNotes] = useState()
   const [trees, setTrees] = useState()
 
+  const dateObject = new Date();
+  let date = new Date().toUTCString().slice(0, 16);
+  console.log(date)
+
   const data = {
     Number_Trees : trees,
     Notes: notes,
+    Date: date
 
   }
 
-  const updateDocument = () => {
-    const docRef = doc(db, 'Projects', selected.name)
-    updateDoc(docRef, data)
+  const addCollection = () => {
+    const docRef = doc(collection(db, 'Progress', selected.name, 'Reports'))
+    setDoc(docRef, data)
     .then(docRef => {
-      console.log('New document added')
-      alert('Update successful')
+      alert('Progress has been updated')
     })
     .catch(error => {
       console.log(error)
@@ -71,6 +76,7 @@ return <View />;
 if (hasPermission === false) {
 return <Text>No access to camera</Text>;
 }
+
 
   return (
     <ScrollView>
@@ -132,7 +138,7 @@ return <Text>No access to camera</Text>;
                 <TextInput multiline = {true} onChangeText = {text => setNotes(text)} style = {styles.textInput2}></TextInput>
                 <Text style = {styles.modalInputTitles}>Update Tree Count</Text>
                 <TextInput keyboardType = 'numeric' onChangeText = {number => setTrees(number)} style = {styles.textInput}></TextInput>
-                <TouchableOpacity style = {styles.button} onPress = {updateDocument}>
+                <TouchableOpacity style = {styles.button} onPress = {addCollection}>
                       <Text style = {styles.btnText}>Update Details</Text>
                 </TouchableOpacity>  
         </View>
