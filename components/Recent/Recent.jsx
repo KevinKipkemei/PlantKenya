@@ -5,18 +5,18 @@ import styles from "./recent.style"
 import useFetch from '../../hook/useFetch'
 import { Image } from "react-native"
 import Update from "../../app/update"
-import { useState } from "react"
+import { useState, cloneElement } from "react"
 
 const Recent = () => {
-  const router = useRouter();
+  const router = useRouter()
 
   const {result, isLoading, error} = useFetch();
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState()
+  const seen = false
 
   const hide = () => setVisible(false);
   const show = () => {setVisible(true)};
-
 
 
   return (
@@ -36,7 +36,7 @@ const Recent = () => {
               {
                 result?.map((item,i) => (
                 <View key={i} style = {styles.card_container}>
-                  <TouchableOpacity onPress={() => {router.push('/report')}}>
+                  <TouchableOpacity activeOpacity={0.9} onPress={() => {router.push({pathname: 'Report', params: {queryId: item.id}})}}>
                     <Image style = {styles.card_image} source={icons.planting2} resizeMode = {'cover'}/>
                   </TouchableOpacity>
                   <Text style = {styles.headerTitle}> {item.Project_Name} </Text>
@@ -61,6 +61,11 @@ const Recent = () => {
           </View>
         </Modal>
       </View>
+      {/* <View>
+      {
+        seen && (<Report name = {selected}/>)
+      }
+      </View> */}
     </View>
   )
 }

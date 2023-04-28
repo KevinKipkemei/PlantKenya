@@ -4,22 +4,29 @@ import React, { useEffect, useState } from 'react'
 import { Text } from "react-native";
 import styles from '../components/styles/report.style'
 import { ScreenHeaderBtn } from "../components";
-import { Stack } from "expo-router";
+import { Stack, useRouter, useSearchParams } from "expo-router";
 import {COLORS, SIZES} from '../constants'
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Print from 'expo-print';
 import {shareAsync} from 'expo-sharing';
-import { collectionGroup, query, getDocs, where, documentId } from "firebase/firestore";
+import { collectionGroup, query, getDocs, where, doc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
-const Report = () => {
+const Report = ({route}) => {
 
   const [selectedPrinter, setSelectedPrinter] = useState()
-  const [primary, setPrimary] = useState('e4p7EuTTtRAlG5tK4zwL')
+  const [primary, setPrimary] = useState()
   const [result, setResult] = useState([])
 
+  // const route =  useRouter()
+
+  const params = useSearchParams()
+
+
   const fetchData = async () => {
-    await getDocs(collectionGroup(db, 'Reports'), where(documentId(), '==', primary))
+    // await getDocs (query(collectionGroup(db, 'Reports'), where('ID', '==', 'pD2OWpmvW3MKtvvKz3uu')))
+    const records = query(collectionGroup(db, 'Reports'), where('ID', '==', params.queryId))
+    await getDocs(records)
     .then((querySnapshot) => {
       const data = querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
       setResult(data)
@@ -31,14 +38,12 @@ const Report = () => {
   }, [])
 
 
-  console.log(result)
-
-  const dateStrings = result.map((item, index) => {
-    const dateObject = item.Date;
-    const timeInMilliseconds = dateObject.seconds * 1000 + Math.floor(dateObject.nanoseconds / 1000000);
-    const date = new Date(timeInMilliseconds);
-    return date.toDateString();
-  })
+  // const dateStrings = result.map((item, index) => {
+  //   const dateObject = item.Date;
+  //   const timeInMilliseconds = dateObject.seconds * 1000 + Math.floor(dateObject.nanoseconds / 1000000);
+  //   const date = new Date(timeInMilliseconds);
+  //   return date.toDateString();
+  // })
 
   const print = async () => {
     await Print.printAsync({
@@ -57,6 +62,7 @@ const Report = () => {
     const printer = await Print.selectPrinterAsync(); // iOS only
     setSelectedPrinter(printer);
   };
+
 
   const html = `
   <html>
@@ -124,9 +130,9 @@ const Report = () => {
               <View key={i}>
                   <View style = {styles.notes_container}>
                     <View style = {styles.topView}>
-                      <Text style = {styles.topViewText}>
+                      {/* <Text style = {styles.topViewText}>
                         Date: {new Date(object.Date.seconds * 1000 + Math.floor(object.Date.nanoseconds/1000000)).toDateString()}
-                      </Text>
+                      </Text> */}
                       <Text style = {styles.topViewText}>Trees Number: {object.Trees_Number}</Text>
                     </View>
                     <View>

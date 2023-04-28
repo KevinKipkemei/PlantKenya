@@ -10,7 +10,7 @@ import {db} from '../firebaseConfig'
 
 
 
-const Update= (name) => {
+const Update = (name) => {
   const [hasPermission, setHasPermission] = useState(null)
   const [imageData, setImageData] = useState([])
   const [showCamera, setShowCamera] = useState(false)
@@ -20,13 +20,12 @@ const Update= (name) => {
 
   const dateObject = new Date();
   let date = new Date().toUTCString().slice(0, 16);
-  console.log(date)
 
   const data = {
     Number_Trees : trees,
     Notes: notes,
-    Date: date
-
+    Date: date,
+    ID: selected.name
   }
 
   const addCollection = () => {
@@ -39,6 +38,7 @@ const Update= (name) => {
       console.log(error)
     })
   }
+
 
 
   useEffect(() => {
