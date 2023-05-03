@@ -26,6 +26,18 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center'
       },
+
+      picTC2 :{
+        height: 35,
+        width: 35,
+        marginLeft: 5,
+        backgroundColor: COLORS.white,
+        borderRadius: 5,
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        marginBottom: 5
+      },
     
 
       modalTitle: {
