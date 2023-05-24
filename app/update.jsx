@@ -1,7 +1,6 @@
-import { View, Text, ScrollView, SafeAreaView, TextInput, TouchableOpacity, FlatList, Image, Button } from "react-native"
+import { View, Text, ScrollView, SafeAreaView, TextInput, TouchableOpacity, FlatList, Image } from "react-native"
 import styles from '../components/styles/update.style'
 import { useState, useEffect } from "react";
-import * as ImagePicker from 'expo-image-picker'
 import {Camera} from 'expo-camera'
 import { COLORS } from "../constants";
 import {Ionicons} from '@expo/vector-icons'
@@ -9,7 +8,7 @@ import {collection, doc, setDoc} from 'firebase/firestore'
 import {db} from '../firebaseConfig'
 import { storage } from "../firebaseConfig";
 import { getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
-import {Buffer} from 'buffer'
+import Spinner from 'react-native-loading-spinner-overlay'
 
 
 
@@ -20,7 +19,7 @@ const Update = (name) => {
   const [selected, setSelected] = useState(name)
   const [notes, setNotes] = useState()
   const [trees, setTrees] = useState()
-  const [imageUrl, setimageUrl] = useState('')
+  const [loading, setLoading] = useState(false)
 
 
   const dateObject = new Date();
@@ -31,25 +30,29 @@ const Update = (name) => {
       alert("Please take pictures of site progress")
     }
 
-    for (let i = 0; i < imageData.length; i++){
-      const storageRef = ref(storage, `${selected.name}/Progress Pictures/${imageData[i].uri.slice(134)}`);
+    setLoading(true)
+    const arrayUrl = []
 
+    for (let i = 0; i < imageData.length; i++) {
+      const storageRef = ref(storage, `${selected.name}/Progress Pictures/${imageData[i].uri.slice(134)}`);
       const img = await fetch(imageData[i].uri)
       const blob = await img.blob()
 
-      try {
-              uploadBytesResumable(storageRef, blob).then(async (snapshot) => {
-              console.log('Uploaded files')
-              const url = await getDownloadURL(snapshot.ref);
-              
-              const docRef = doc(collection(db, 'Progress', selected.name, 'Reports'))
-              setDoc(docRef,
+      await uploadBytesResumable(storageRef, blob).then( async (snapshot) => {
+        await getDownloadURL(snapshot.ref).then((url) => {
+          arrayUrl.push(url)
+        })
+      })
+    }
+
+    const docRef = doc(collection(db, 'Progress', selected.name, 'Reports'))
+    setDoc(docRef,
                 {
                   Number_Trees : trees,
                   Notes: notes,
                   Date: date,
                   ID: selected.name,
-                  Url: url
+                  Urls: arrayUrl
                 })
               .then(docRef => {
                 alert('Progress has been updated')
@@ -57,14 +60,9 @@ const Update = (name) => {
               .catch(error => {
                  console.log(error)
                })
-            })
-          }
-      catch (e){
-       console.log(e)
-      }
-    }
 
     setImageData([])
+    setLoading(false)
   }
 
 
@@ -110,17 +108,8 @@ return <Text>No access to camera</Text>;
       <SafeAreaView style = {styles.container}>
         <View style = {{height: 700}}> 
                 <Text style = {styles.modalTitle}>Update Project Details</Text>
-                <Text style = {styles.modalInputTitles}>Add Site Picures</Text>
+                <Text style = {styles.modalInputTitles}>Add Site Pictures</Text>
                             <View style = {styles.uploadButtons}>
-                                {/* <TouchableOpacity style = {styles.picTC}
-                                    onPress={async () => {
-                                        const result = await ImagePicker.launchImageLibraryAsync();
-                                        if (!result.canceled) {
-                                        setImageData([...imageData, result]);
-                                        }
-                                    }}>
-                                    <Ionicons name="folder-outline" size={22} color="grey" />
-                                </TouchableOpacity> */}
                                 <TouchableOpacity style = {styles.picTC} onPress = {() => setShowCamera(true)}>
                                   <Ionicons name="camera-outline" size={22} color="grey" />
                                 </TouchableOpacity>
@@ -167,6 +156,7 @@ return <Text>No access to camera</Text>;
                 <TouchableOpacity style = {styles.button} onPress = {addCollection}>
                       <Text style = {styles.btnText}>Update Details</Text>
                 </TouchableOpacity>
+                <Spinner visible = {loading} textContent="Updating Progress" textStyle={styles.btnText}/>
         </View>
       </SafeAreaView>
     </ScrollView>

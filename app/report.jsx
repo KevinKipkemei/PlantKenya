@@ -3,7 +3,6 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from 'react'
 import { Text } from "react-native";
 import styles from '../components/styles/report.style'
-import { ScreenHeaderBtn } from "../components";
 import { Stack, useRouter, useSearchParams } from "expo-router";
 import {COLORS, SIZES} from '../constants'
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -11,20 +10,19 @@ import * as Print from 'expo-print';
 import {shareAsync} from 'expo-sharing';
 import { collectionGroup, query, getDocs, where, doc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import Slider from './Slider'
 
-const Report = ({route}) => {
+const Report = () => {
 
   const [selectedPrinter, setSelectedPrinter] = useState()
-  const [primary, setPrimary] = useState()
   const [result, setResult] = useState([])
 
-  // const route =  useRouter()
+  const router =  useRouter()
 
   const params = useSearchParams()
 
 
   const fetchData = async () => {
-    // await getDocs (query(collectionGroup(db, 'Reports'), where('ID', '==', 'pD2OWpmvW3MKtvvKz3uu')))
     const records = query(collectionGroup(db, 'Reports'), where('ID', '==', params.queryId))
     await getDocs(records)
     .then((querySnapshot) => {
@@ -37,13 +35,6 @@ const Report = ({route}) => {
     fetchData();
   }, [])
 
-
-  // const dateStrings = result.map((item, index) => {
-  //   const dateObject = item.Date;
-  //   const timeInMilliseconds = dateObject.seconds * 1000 + Math.floor(dateObject.nanoseconds / 1000000);
-  //   const date = new Date(timeInMilliseconds);
-  //   return date.toDateString();
-  // })
 
   const print = async () => {
     await Print.printAsync({
@@ -105,7 +96,7 @@ const Report = ({route}) => {
           headerTitle: 'Progress Reports',
           headerShadowVisible: false,
           headerRight : () => (
-            <TouchableOpacity onPress={printToFile}>
+            <TouchableOpacity onPress={() => router.push({pathname: 'Test2'})}>
               <Ionicons name="document-text-outline" size={21} color='black'/>
             </TouchableOpacity>
           )
@@ -122,18 +113,17 @@ const Report = ({route}) => {
           </>
         )}
         <View>
-          <Text style = {styles.projectTitle}>
+          {/* <Text style = {styles.projectTitle}>
             Makueni Tree Planting Exercise
-          </Text>
+          </Text> */}
           {
             result?.map((object, i) =>(
               <View key={i}>
+                <Slider result={object.Urls}/>
                   <View style = {styles.notes_container}>
                     <View style = {styles.topView}>
-                      {/* <Text style = {styles.topViewText}>
-                        Date: {new Date(object.Date.seconds * 1000 + Math.floor(object.Date.nanoseconds/1000000)).toDateString()}
-                      </Text> */}
-                      <Text style = {styles.topViewText}>Trees Number: {object.Trees_Number}</Text>
+                      <Text style = {styles.topViewText}>Date: {object.Date}</Text>
+                      <Text style = {styles.topViewText}>Trees Number: {object.Number_Trees}</Text>
                     </View>
                     <View>
                       <Text style = {styles.notesTitle}>
